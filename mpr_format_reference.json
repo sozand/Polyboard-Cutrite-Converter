@@ -1,0 +1,1101 @@
+{
+  "version": "1.0",
+  "source_pdf": "woodwop-mpr4x-format-pdf-free.pdf",
+  "command_reference": {
+    "2009": {
+      "number": 2009,
+      "name": "Variantendatei",
+      "pattern": "<2009 \\\\Variantendatei\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75
+      ],
+      "found_in_files": []
+    },
+    "180": {
+      "number": 180,
+      "name": "Koordsys",
+      "pattern": "<180 \\\\Koordsys\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        12,
+        13,
+        15,
+        56
+      ],
+      "found_in_files": []
+    },
+    "100": {
+      "number": 100,
+      "name": "Maschinenanschlags",
+      "pattern": "<100 \\\\Maschinenanschlags\\\\",
+      "parameters": [
+        "LA",
+        "BR",
+        "DI",
+        "AX",
+        "AY",
+        "FNX",
+        "FNY"
+      ],
+      "example_parameters": {
+        "LA": "50",
+        "BR": "561.12",
+        "DI": "19.44",
+        "AX": "0",
+        "AY": "0",
+        "FNX": "0",
+        "FNY": "0"
+      },
+      "documentation_pages": [
+        18
+      ],
+      "found_in_files": [
+        "50CrossBar_1_8.mpr",
+        "50CrossBar_2_9.mpr",
+        "50CrossBar_3_10.mpr",
+        "Back_5.mpr",
+        "Back_Drawer_500_1_20.mpr",
+        "Back_Drawer_500_2_21.mpr",
+        "Bottom_2.mpr",
+        "Bottom_Drawer_500_1_18.mpr",
+        "Bottom_Drawer_500_2_19.mpr",
+        "Counter_Frontage_Drawer_500_1_22.mpr",
+        "Counter_Frontage_Drawer_500_2_23.mpr",
+        "Door_Std_Single_1_11.mpr",
+        "Drawer_500_1_12.mpr",
+        "Drawer_500_2_13.mpr",
+        "Left_Side_3.mpr",
+        "L_Side_Drawer_500_1_14.mpr",
+        "L_Side_Drawer_500_2_15.mpr",
+        "Mobile_Shelf_1_6.mpr",
+        "Mobile_Shelf_2_7.mpr",
+        "Right_Side_4.mpr",
+        "R_Side_Drawer_500_1_16.mpr",
+        "R_Side_Drawer_500_2_17.mpr",
+        "Top_1.mpr"
+      ],
+      "description": "Workpiece definition"
+    },
+    "101": {
+      "number": 101,
+      "name": "Beschreibung",
+      "pattern": "<101 \\\\Beschreibung\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        19
+      ],
+      "found_in_files": []
+    },
+    "102": {
+      "number": 102,
+      "name": "BohrVert",
+      "pattern": "<102 \\\\BohrVert\\\\",
+      "parameters": [
+        "XA",
+        "YA",
+        "BM",
+        "DU",
+        "AN",
+        "MI",
+        "AB",
+        "WI",
+        "KO"
+      ],
+      "example_parameters": {
+        "XA": "1029.944",
+        "YA": "481.12",
+        "BM": "LSL",
+        "DU": "4",
+        "AN": "1",
+        "MI": "0",
+        "AB": "32",
+        "WI": "0",
+        "KO": "00"
+      },
+      "documentation_pages": [
+        21
+      ],
+      "found_in_files": [
+        "Back_5.mpr",
+        "Bottom_2.mpr",
+        "Door_Std_Single_1_11.mpr",
+        "Drawer_500_1_12.mpr",
+        "Drawer_500_2_13.mpr",
+        "Left_Side_3.mpr",
+        "L_Side_Drawer_500_1_14.mpr",
+        "L_Side_Drawer_500_2_15.mpr",
+        "Right_Side_4.mpr",
+        "R_Side_Drawer_500_1_16.mpr",
+        "R_Side_Drawer_500_2_17.mpr"
+      ]
+    },
+    "001": {
+      "number": 1,
+      "name": "Bohrzyklen",
+      "pattern": "<001 \\\\Bohrzyklen\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        21
+      ],
+      "found_in_files": []
+    },
+    "103": {
+      "number": 103,
+      "name": "BohrHoriz",
+      "pattern": "<103 \\\\BohrHoriz\\\\",
+      "parameters": [
+        "XA",
+        "YA",
+        "ZA",
+        "DU",
+        "TI",
+        "BM",
+        "AN",
+        "MI",
+        "AB",
+        "ANA",
+        "KO"
+      ],
+      "example_parameters": {
+        "XA": "36",
+        "YA": "561.12",
+        "ZA": "9.72",
+        "DU": "8",
+        "TI": "21",
+        "BM": "YM",
+        "AN": "1",
+        "MI": "0",
+        "AB": "32",
+        "ANA": "10",
+        "KO": "00"
+      },
+      "documentation_pages": [
+        22
+      ],
+      "found_in_files": [
+        "50CrossBar_1_8.mpr",
+        "50CrossBar_2_9.mpr",
+        "50CrossBar_3_10.mpr",
+        "Back_5.mpr",
+        "Bottom_2.mpr",
+        "L_Side_Drawer_500_1_14.mpr",
+        "L_Side_Drawer_500_2_15.mpr",
+        "R_Side_Drawer_500_1_16.mpr",
+        "R_Side_Drawer_500_2_17.mpr",
+        "Top_1.mpr"
+      ],
+      "description": "Horizontal drilling"
+    },
+    "104": {
+      "number": 104,
+      "name": "Bohrungen",
+      "pattern": "<104 \\\\Bohrungen\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        22
+      ],
+      "found_in_files": []
+    },
+    "131": {
+      "number": 131,
+      "name": "UfluBohr",
+      "pattern": "<131 \\\\UfluBohr\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        23
+      ],
+      "found_in_files": []
+    },
+    "109": {
+      "number": 109,
+      "name": "Nuten",
+      "pattern": "<109 \\\\Nuten\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        24
+      ],
+      "found_in_files": []
+    },
+    "124": {
+      "number": 124,
+      "name": "Nuten",
+      "pattern": "<124 \\\\Nuten\\\\",
+      "parameters": [
+        "XA",
+        "YA",
+        "XE",
+        "YE",
+        "ZA",
+        "WI",
+        "RK",
+        "EM",
+        "SM",
+        "TI",
+        "TV",
+        "MN",
+        "KO"
+      ],
+      "example_parameters": {
+        "XA": "14",
+        "YA": "0",
+        "XE": "14",
+        "YE": "597",
+        "ZA": "19.4",
+        "WI": "45",
+        "RK": "WRKR",
+        "EM": "MOD2",
+        "SM": "0",
+        "TI": "19.79899",
+        "TV": "0",
+        "MN": "GL",
+        "KO": "00"
+      },
+      "documentation_pages": [
+        25
+      ],
+      "found_in_files": [
+        "Door_Std_Single_1_11.mpr",
+        "Drawer_500_1_12.mpr",
+        "Drawer_500_2_13.mpr"
+      ]
+    },
+    "119": {
+      "number": 119,
+      "name": "Polygonzug",
+      "pattern": "<119 \\\\Polygonzug\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        26
+      ],
+      "found_in_files": []
+    },
+    "152": {
+      "number": 152,
+      "name": "Absolut",
+      "pattern": "<152 \\\\Absolut\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        27
+      ],
+      "found_in_files": []
+    },
+    "112": {
+      "number": 112,
+      "name": "Tasche",
+      "pattern": "<112 \\\\Tasche\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        27
+      ],
+      "found_in_files": []
+    },
+    "123": {
+      "number": 123,
+      "name": "Tasc",
+      "pattern": "<123 \\\\Tasc\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        28
+      ],
+      "found_in_files": []
+    },
+    "181": {
+      "number": 181,
+      "name": "FreiForm",
+      "pattern": "<181 \\\\FreiForm\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        29
+      ],
+      "found_in_files": []
+    },
+    "141": {
+      "number": 141,
+      "name": "Tasche",
+      "pattern": "<141 \\\\Tasche\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        30
+      ],
+      "found_in_files": []
+    },
+    "151": {
+      "number": 151,
+      "name": "UflurTasche",
+      "pattern": "<151 \\\\UflurTasche\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        31
+      ],
+      "found_in_files": []
+    },
+    "116": {
+      "number": 116,
+      "name": "Code",
+      "pattern": "<116 \\\\Code\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        32
+      ],
+      "found_in_files": []
+    },
+    "117": {
+      "number": 117,
+      "name": "Stop",
+      "pattern": "<117 \\\\Stop\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        32
+      ],
+      "found_in_files": []
+    },
+    "153": {
+      "number": 153,
+      "name": "Universal",
+      "pattern": "<153 \\\\Universal\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        33
+      ],
+      "found_in_files": []
+    },
+    "129": {
+      "number": 129,
+      "name": "Spindel",
+      "pattern": "<129 \\\\Spindel\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        34
+      ],
+      "found_in_files": []
+    },
+    "132": {
+      "number": 132,
+      "name": "Vermessen",
+      "pattern": "<132 \\\\Vermessen\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        35
+      ],
+      "found_in_files": []
+    },
+    "121": {
+      "number": 121,
+      "name": "Bl",
+      "pattern": "<121 \\\\Bl\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        36
+      ],
+      "found_in_files": []
+    },
+    "139": {
+      "number": 139,
+      "name": "Verzeichnis",
+      "pattern": "<139 \\\\Verzeichnis\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        36
+      ],
+      "found_in_files": [],
+      "description": "Component reference"
+    },
+    "148": {
+      "number": 148,
+      "name": "Werkst",
+      "pattern": "<148 \\\\Werkst\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        37
+      ],
+      "found_in_files": []
+    },
+    "184": {
+      "number": 184,
+      "name": "Werkst",
+      "pattern": "<184 \\\\Werkst\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        37
+      ],
+      "found_in_files": []
+    },
+    "105": {
+      "number": 105,
+      "name": "Fr",
+      "pattern": "<105 \\\\Fr\\\\",
+      "parameters": [
+        "EA",
+        "MDA",
+        "RK",
+        "EE",
+        "MDE",
+        "EM",
+        "RI",
+        "SM",
+        "AB",
+        "ZA",
+        "HP"
+      ],
+      "example_parameters": {
+        "EA": "2:0",
+        "MDA": "SEN",
+        "RK": "WRKL",
+        "EE": "2:2",
+        "MDE": "SEN_AB",
+        "EM": "1",
+        "RI": "1",
+        "SM": "0",
+        "AB": "0",
+        "ZA": "5.4",
+        "HP": "0"
+      },
+      "documentation_pages": [
+        39
+      ],
+      "found_in_files": [
+        "Door_Std_Single_1_11.mpr"
+      ]
+    },
+    "106": {
+      "number": 106,
+      "name": "Kantenanleimen",
+      "pattern": "<106 \\\\Kantenanleimen\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        40
+      ],
+      "found_in_files": []
+    },
+    "556": {
+      "number": 556,
+      "name": "Art",
+      "pattern": "<556 \\\\Art\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        41,
+        68,
+        70,
+        72
+      ],
+      "found_in_files": []
+    },
+    "136": {
+      "number": 136,
+      "name": "Stegkante",
+      "pattern": "<136 \\\\Stegkante\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        43
+      ],
+      "found_in_files": []
+    },
+    "107": {
+      "number": 107,
+      "name": "Konturzug",
+      "pattern": "<107 \\\\Konturzug\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        44
+      ],
+      "found_in_files": []
+    },
+    "108": {
+      "number": 108,
+      "name": "Kappen",
+      "pattern": "<108 \\\\Kappen\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        45
+      ],
+      "found_in_files": []
+    },
+    "127": {
+      "number": 127,
+      "name": "Klink",
+      "pattern": "<127 \\\\Klink\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        46
+      ],
+      "found_in_files": []
+    },
+    "125": {
+      "number": 125,
+      "name": "Schleifen",
+      "pattern": "<125 \\\\Schleifen\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        47
+      ],
+      "found_in_files": []
+    },
+    "134": {
+      "number": 134,
+      "name": "Drucken",
+      "pattern": "<134 \\\\Drucken\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        48
+      ],
+      "found_in_files": []
+    },
+    "138": {
+      "number": 138,
+      "name": "Kante",
+      "pattern": "<138 \\\\Kante\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        49
+      ],
+      "found_in_files": []
+    },
+    "133": {
+      "number": 133,
+      "name": "Horizontales",
+      "pattern": "<133 \\\\Horizontales\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        49
+      ],
+      "found_in_files": []
+    },
+    "140": {
+      "number": 140,
+      "name": "Konturzug",
+      "pattern": "<140 \\\\Konturzug\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        50
+      ],
+      "found_in_files": []
+    },
+    "113": {
+      "number": 113,
+      "name": "Unterflur",
+      "pattern": "<113 \\\\Unterflur\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        52
+      ],
+      "found_in_files": []
+    },
+    "128": {
+      "number": 128,
+      "name": "Fraesen",
+      "pattern": "<128 \\\\Fraesen\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        53
+      ],
+      "found_in_files": []
+    },
+    "126": {
+      "number": 126,
+      "name": "Abblasen",
+      "pattern": "<126 \\\\Abblasen\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        54
+      ],
+      "found_in_files": []
+    },
+    "154": {
+      "number": 154,
+      "name": "Laser",
+      "pattern": "<154 \\\\Laser\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        55
+      ],
+      "found_in_files": []
+    },
+    "118": {
+      "number": 118,
+      "name": "Drehzahl",
+      "pattern": "<118 \\\\Drehzahl\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        55
+      ],
+      "found_in_files": []
+    },
+    "122": {
+      "number": 122,
+      "name": "Ablaufmakros",
+      "pattern": "<122 \\\\Ablaufmakros\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        57
+      ],
+      "found_in_files": []
+    },
+    "149": {
+      "number": 149,
+      "name": "Konturfraesen",
+      "pattern": "<149 \\\\Konturfraesen\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        57
+      ],
+      "found_in_files": []
+    },
+    "161": {
+      "number": 161,
+      "name": "Formfr",
+      "pattern": "<161 \\\\Formfr\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        58
+      ],
+      "found_in_files": []
+    },
+    "158": {
+      "number": 158,
+      "name": "Konturfraesen",
+      "pattern": "<158 \\\\Konturfraesen\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        59
+      ],
+      "found_in_files": []
+    },
+    "159": {
+      "number": 159,
+      "name": "Verleimen",
+      "pattern": "<159 \\\\Verleimen\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        60
+      ],
+      "found_in_files": []
+    },
+    "177": {
+      "number": 177,
+      "name": "Heisspraegen",
+      "pattern": "<177 \\\\Heisspraegen\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        60
+      ],
+      "found_in_files": []
+    },
+    "157": {
+      "number": 157,
+      "name": "Aggregat",
+      "pattern": "<157 \\\\Aggregat\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        61
+      ],
+      "found_in_files": []
+    },
+    "165": {
+      "number": 165,
+      "name": "Andruckzone",
+      "pattern": "<165 \\\\Andruckzone\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        62
+      ],
+      "found_in_files": []
+    },
+    "166": {
+      "number": 166,
+      "name": "Kappen",
+      "pattern": "<166 \\\\Kappen\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        62
+      ],
+      "found_in_files": []
+    },
+    "167": {
+      "number": 167,
+      "name": "Schleifen",
+      "pattern": "<167 \\\\Schleifen\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        63
+      ],
+      "found_in_files": []
+    },
+    "170": {
+      "number": 170,
+      "name": "Kontur",
+      "pattern": "<170 \\\\Kontur\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        63
+      ],
+      "found_in_files": []
+    },
+    "169": {
+      "number": 169,
+      "name": "Kontur",
+      "pattern": "<169 \\\\Kontur\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        64
+      ],
+      "found_in_files": []
+    },
+    "135": {
+      "number": 135,
+      "name": "Enable",
+      "pattern": "<135 \\\\Enable\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        64
+      ],
+      "found_in_files": []
+    },
+    "182": {
+      "number": 182,
+      "name": "Enable",
+      "pattern": "<182 \\\\Enable\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        65
+      ],
+      "found_in_files": []
+    },
+    "187": {
+      "number": 187,
+      "name": "Kantenextrudieren",
+      "pattern": "<187 \\\\Kantenextrudieren\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        67
+      ],
+      "found_in_files": []
+    },
+    "188": {
+      "number": 188,
+      "name": "Verleimteil",
+      "pattern": "<188 \\\\Verleimteil\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        69
+      ],
+      "found_in_files": []
+    },
+    "189": {
+      "number": 189,
+      "name": "Kanten",
+      "pattern": "<189 \\\\Kanten\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        71
+      ],
+      "found_in_files": []
+    },
+    "114": {
+      "number": 114,
+      "name": "Saugermakros",
+      "pattern": "<114 \\\\Saugermakros\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        73
+      ],
+      "found_in_files": []
+    },
+    "115": {
+      "number": 115,
+      "name": "Achse",
+      "pattern": "<115 \\\\Achse\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        73
+      ],
+      "found_in_files": []
+    },
+    "130": {
+      "number": 130,
+      "name": "Achse",
+      "pattern": "<130 \\\\Achse\\\\",
+      "parameters": [],
+      "example_parameters": {},
+      "documentation_pages": [
+        74
+      ],
+      "found_in_files": []
+    }
+  },
+  "edge_reference": {
+    "0": {
+      "number": 0,
+      "pattern": "$E0",
+      "documentation_pages": [
+        14
+      ]
+    },
+    "1": {
+      "number": 1,
+      "pattern": "$E1",
+      "documentation_pages": [
+        14
+      ]
+    },
+    "2": {
+      "number": 2,
+      "pattern": "$E2",
+      "documentation_pages": [
+        15,
+        16
+      ]
+    },
+    "6": {
+      "number": 6,
+      "pattern": "$E6",
+      "documentation_pages": [
+        16
+      ]
+    },
+    "3": {
+      "number": 3,
+      "pattern": "$E3",
+      "documentation_pages": [
+        16
+      ]
+    }
+  },
+  "geometry_reference": {
+    "KP": {
+      "command": "KP",
+      "documentation_pages": [
+        5,
+        14
+      ]
+    },
+    "KL": {
+      "command": "KL",
+      "documentation_pages": [
+        5,
+        14,
+        37,
+        69,
+        71
+      ]
+    },
+    "KR": {
+      "command": "KR",
+      "documentation_pages": [
+        5,
+        14,
+        16,
+        33,
+        34,
+        37
+      ]
+    },
+    "KF": {
+      "command": "KF",
+      "documentation_pages": [
+        5,
+        14,
+        16
+      ]
+    },
+    "KS": {
+      "command": "KS",
+      "documentation_pages": [
+        5,
+        14,
+        16,
+        41,
+        43,
+        44,
+        46,
+        69,
+        71
+      ]
+    },
+    "KX": {
+      "command": "KX",
+      "documentation_pages": [
+        16
+      ]
+    },
+    "KY": {
+      "command": "KY",
+      "documentation_pages": [
+        16
+      ]
+    },
+    "KZ": {
+      "command": "KZ",
+      "documentation_pages": [
+        40,
+        41,
+        43,
+        44,
+        60,
+        68,
+        69,
+        70
+      ]
+    },
+    "KB": {
+      "command": "KB",
+      "documentation_pages": [
+        41,
+        69
+      ]
+    }
+  },
+  "parsing_rules": {
+    "command_pattern": "<(\\d+)\\s+\\\\\\\\([A-Za-z_]+)\\\\\\\\",
+    "edge_pattern": "\\$E(\\d+)",
+    "parameter_pattern": "([A-Z]+)=\"([^\"]+)\"",
+    "header_pattern": "\\[H",
+    "dimension_pattern": "\\[001"
+  },
+  "known_commands": {
+    "100": {
+      "name": "WerkStck",
+      "description": "Workpiece definition"
+    },
+    "103": {
+      "name": "BohrHoriz",
+      "description": "Horizontal drilling"
+    },
+    "139": {
+      "name": "Komponente",
+      "description": "Component reference"
+    }
+  }
+}
