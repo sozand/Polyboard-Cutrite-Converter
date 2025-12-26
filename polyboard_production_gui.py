@@ -8,6 +8,12 @@ import json
 import uuid
 from Detect_Processes_In_mpr_file_ import map_and_count_mpr_processes
 
+try:
+    from PIL import Image, ImageTk
+    PIL_AVAILABLE = True
+except ImportError:
+    PIL_AVAILABLE = False
+
 # Dark theme palette
 DARK_BG = "#1e1e1e"
 DARK_FG = "#e0e0e0"
@@ -97,10 +103,12 @@ class ConventionEditorDialog:
         self.json_path = json_path
         self.on_save_callback = on_save_callback
         self.data_df = initial_df.copy() if initial_df is not None else pd.DataFrame(columns=CONVENTION_COLUMNS)
+        self.image_thumbs = []
+        self.image_full = {}
 
         self.window = tk.Toplevel(parent)
         self.window.title("Convention Editor")
-        self.window.geometry("1000x600")
+        self.window.geometry("1200x700")
         self.window.transient(parent)
         self.window.grab_set()
 
@@ -108,6 +116,7 @@ class ConventionEditorDialog:
 
         self._build_ui()
         self._populate_tree()
+        self._load_images_panel()
 
     def _build_ui(self):
         top_frame = ttk.Frame(self.window, padding="8")
@@ -156,12 +165,103 @@ class ConventionEditorDialog:
             ent.pack(side=tk.LEFT, fill=tk.X, expand=True)
             self.entries[col] = ent
 
+        # Image panel
+        img_frame = ttk.LabelFrame(top_frame, text="Edge Diagram Reference (Edge_Diagram_Ref)", padding="8")
+        img_frame.pack(fill=tk.BOTH, expand=True, pady=(8, 0))
+        self.img_canvas = tk.Canvas(img_frame, bg=DARK_BG, highlightthickness=0)
+        self.img_vsb = ttk.Scrollbar(img_frame, orient="vertical", command=self.img_canvas.yview)
+        self.img_hsb = ttk.Scrollbar(img_frame, orient="horizontal", command=self.img_canvas.xview)
+        self.img_canvas.configure(yscrollcommand=self.img_vsb.set, xscrollcommand=self.img_hsb.set)
+
+        self.img_inner = ttk.Frame(self.img_canvas)
+        self.img_canvas.create_window((0, 0), window=self.img_inner, anchor="nw")
+
+        self.img_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.img_vsb.pack(side=tk.RIGHT, fill=tk.Y)
+        self.img_hsb.pack(side=tk.BOTTOM, fill=tk.X)
+
+        self.img_inner.bind("<Configure>", lambda e: self.img_canvas.configure(scrollregion=self.img_canvas.bbox("all")))
+
     def _populate_tree(self):
         self.tree.delete(*self.tree.get_children())
         df = self.data_df
         for _, row in df.iterrows():
             values = [row.get(col, "") for col in CONVENTION_COLUMNS]
             self.tree.insert("", "end", values=values)
+
+    def _load_images_panel(self):
+        # Clear previous thumbs
+        self.image_thumbs.clear()
+        for child in list(self.img_inner.winfo_children()):
+            child.destroy()
+
+        ref_dir = Path(__file__).resolve().parent / "Edge_Diagram_Ref"
+        if not ref_dir.exists():
+            ttk.Label(self.img_inner, text="Edge_Diagram_Ref folder not found.", foreground=DARK_FG, background=DARK_BG).pack(anchor="w", padx=4, pady=2)
+            return
+        files = sorted([p for p in ref_dir.iterdir() if p.is_file() and p.suffix.lower() in [".png", ".jpg", ".jpeg", ".gif", ".bmp"]], key=lambda p: p.name)
+        if not files:
+            ttk.Label(self.img_inner, text="No images in Edge_Diagram_Ref.", foreground=DARK_FG, background=DARK_BG).pack(anchor="w", padx=4, pady=2)
+            return
+        if not PIL_AVAILABLE:
+            ttk.Label(self.img_inner, text="Pillow not installed; cannot load images.", foreground=DARK_FG, background=DARK_BG).pack(anchor="w", padx=4, pady=2)
+            for p in files:
+                ttk.Label(self.img_inner, text=p.name, foreground=DARK_FG, background=DARK_BG).pack(anchor="w", padx=4, pady=2)
+            return
+
+        for p in files:
+            try:
+                img = Image.open(p)
+                img.thumbnail((300, 300))
+                tkimg = ImageTk.PhotoImage(img)
+                self.image_thumbs.append(tkimg)
+                self.image_full[p.name] = Image.open(p)  # store full image for zoom
+                frame = ttk.Frame(self.img_inner)
+                frame.pack(anchor="w", padx=4, pady=4, fill=tk.X)
+                ttk.Label(frame, text=p.name).pack(anchor="w")
+                lbl = tk.Label(frame, image=tkimg, bg=DARK_BG, cursor="hand2")
+                lbl.pack(anchor="w")
+                lbl.bind("<Button-1>", lambda e, name=p.name: self._open_image_popup(name))
+            except Exception as e:
+                ttk.Label(self.img_inner, text=f"{p.name} (error: {e})", foreground=DARK_FG, background=DARK_BG).pack(anchor="w", padx=4, pady=2)
+
+    def _open_image_popup(self, name: str):
+        if not PIL_AVAILABLE or name not in self.image_full:
+            return
+        img = self.image_full[name]
+        popup = tk.Toplevel(self.window)
+        popup.title(name)
+        popup.geometry("900x600")
+        popup.transient(self.window)
+        apply_dark_theme(popup)
+
+        canvas = tk.Canvas(popup, bg=DARK_BG, highlightthickness=0)
+        vsb = ttk.Scrollbar(popup, orient="vertical", command=canvas.yview)
+        hsb = ttk.Scrollbar(popup, orient="horizontal", command=canvas.xview)
+        canvas.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+        canvas.grid(row=0, column=0, sticky="nsew")
+        vsb.grid(row=0, column=1, sticky="ns")
+        hsb.grid(row=1, column=0, sticky="ew")
+        popup.rowconfigure(0, weight=1)
+        popup.columnconfigure(0, weight=1)
+
+        # Resize to fit popup width while keeping aspect ratio
+        def render_image():
+            width = canvas.winfo_width()
+            height = canvas.winfo_height()
+            if width < 10 or height < 10:
+                popup.after(50, render_image)
+                return
+            img_copy = img.copy()
+            img_copy.thumbnail((max(width-20, 100), max(height-20, 100)))
+            tkimg = ImageTk.PhotoImage(img_copy)
+            canvas.image = tkimg  # keep reference
+            canvas.delete("all")
+            canvas.create_image(0, 0, anchor="nw", image=tkimg)
+            canvas.config(scrollregion=canvas.bbox("all"))
+
+        canvas.bind("<Configure>", lambda e: render_image())
+        render_image()
 
     def _get_form_data(self) -> dict:
         return {col: self.entries[col].get().strip() for col in CONVENTION_COLUMNS}

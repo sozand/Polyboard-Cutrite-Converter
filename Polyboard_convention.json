@@ -235,7 +235,7 @@
     "Face_1":"in_top",
     "Face_2":"in_bottom",
     "Edge_0":":::",
-    "Edge_1":"000:::",
+    "Edge_1":":::000",
     "Edge_2_no_connect":"000:000::",
     "Edge_2_connect":"nan",
     "Edge_3":"nan",
