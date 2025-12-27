@@ -624,6 +624,7 @@ class CutlistGeneratorTab:
         self.cutlist_df = None
         self.status_text = None
         self.tool_diameter = tk.DoubleVar(value=10.0)
+        self.remove_macro_124 = tk.BooleanVar(value=False)
         
         self._create_widgets()
     
@@ -661,6 +662,7 @@ class CutlistGeneratorTab:
                   command=self._export_cutlist).pack(side=tk.LEFT)
         ttk.Label(button_frame, text="Tool Ø (mm):").pack(side=tk.LEFT, padx=(10, 4))
         ttk.Spinbox(button_frame, from_=1, to=50, increment=0.5, textvariable=self.tool_diameter, width=6).pack(side=tk.LEFT)
+        ttk.Checkbutton(button_frame, text="Remove macro 124", variable=self.remove_macro_124).pack(side=tk.LEFT, padx=(10, 0))
 
         # Preview area (table with horizontal + vertical scroll)
         preview_label = ttk.Label(self.frame, text="Preview (first rows):")
@@ -1109,12 +1111,15 @@ class CutlistGeneratorTab:
         ]
         return "\n".join(new_block), ("X" if along_x else "Y"), groove_len
 
-    def _transform_mpr(self, path: Path, tool_diam: float) -> dict:
+    def _transform_mpr(self, path: Path, tool_diam: float, remove_macro_124: bool) -> dict:
         """Return transformed text and actions without writing."""
         actions = {
             "path": path,
             "removed_component": False,
             "removed_124": False,
+            "remove_124_requested": remove_macro_124,
+            "remove_124_skipped": False,
+            "has_macro_124": False,
             "converted_109_to_151": [],
             "new_text": None,
             "changed": False,
@@ -1134,13 +1139,20 @@ class CutlistGeneratorTab:
         # Remove component block
         text, removed_comp = self._remove_component_block(text)
         actions["removed_139_InvalidMacro"] = removed_comp
+        actions["removed_component"] = removed_comp
 
-        # Remove 124
+        # Detect macro 124 presence (before any optional removal)
         pattern124 = re.compile(r'(?ms)^\s*<\s*124\b.*?(?=^\s*<\s*\d+\b|\Z)')
-        cleaned_124 = pattern124.sub("", text)
-        if cleaned_124 != text:
-            actions["removed_124"] = True
-            text = cleaned_124
+        actions["has_macro_124"] = bool(pattern124.search(text))
+
+        # Remove 124 (optional)
+        if remove_macro_124:
+            cleaned_124 = pattern124.sub("", text)
+            if cleaned_124 != text:
+                actions["removed_124"] = True
+                text = cleaned_124
+        else:
+            actions["remove_124_skipped"] = True
 
         # Process blocks
         block_re = re.compile(r'(?ms)^\s*<\s*(\d+)\b.*?(?=^\s*<\s*\d+\b|\Z)')
@@ -1149,7 +1161,7 @@ class CutlistGeneratorTab:
         for m in matches:
             block = m.group(0)
             mid = m.group(1)
-            if mid == "124":
+            if mid == "124" and remove_macro_124:
                 continue
             if mid == "109":
                 t_val = self._get_param(block, "T_")
@@ -1207,7 +1219,14 @@ class CutlistGeneratorTab:
             la100 = act.get("la_100", "")
             br100 = act.get("br_100", "")
             comp = "yes" if act.get("removed_139_InvalidMacro") else ""
-            m124 = "yes" if act.get("removed_124") else ""
+            m124 = ""
+            if act.get("has_macro_124"):
+                if act.get("removed_124"):
+                    m124 = "removed"
+                elif act.get("remove_124_requested") is False:
+                    m124 = "kept (toggle off)"
+                else:
+                    m124 = "present"
             conv = ", ".join(act.get("converted_109_to_151", []))
             err = act.get("error", "")
             tree.insert("", "end", values=[fname, la100, br100, comp, m124, conv, err])
@@ -1435,7 +1454,7 @@ class CutlistGeneratorTab:
 
             actions = []
             for path in found_map.values():
-                actions.append(self._transform_mpr(path, self.tool_diameter.get()))
+                actions.append(self._transform_mpr(path, self.tool_diameter.get(), self.remove_macro_124.get()))
 
             # Build confirmation summary
             lines = []
@@ -1444,10 +1463,14 @@ class CutlistGeneratorTab:
                     lines.append(f"{act['path'].name}: ERROR {act['error']}")
                     continue
                 flags = []
-                if act["removed_component"]:
+                if act.get("removed_139_InvalidMacro") or act.get("removed_component"):
                     flags.append("removed_component")
-                if act["removed_124"]:
+                if act.get("removed_124"):
                     flags.append("removed_124")
+                elif act.get("remove_124_requested") is False:
+                    flags.append("kept_124 (toggle off)")
+                elif act.get("remove_124_requested") and not act.get("removed_124"):
+                    flags.append("no_124_found")
                 if act["converted_109_to_151"]:
                     flags.extend(act["converted_109_to_151"])
                 if not flags:
