@@ -1062,6 +1062,7 @@ class CutlistGeneratorTab:
         nb = self._get_param(block, "NB")
         ti = self._get_param(block, "TI")
         tval = self._get_param(block, "T_")
+        rk = self._get_param(block, "RK")
 
         try:
             xa_f = float(xa); ya_f = float(ya); xe_f = float(xe); ye_f = float(ye)
@@ -1078,13 +1079,23 @@ class CutlistGeneratorTab:
         except ValueError:
             nb_f = 0.0
 
+        rk_norm = rk.upper() if isinstance(rk, str) else "NOWRK"
+
         if along_x:
             xa151 = la_100 / 2 if la_100 else xa_f
             ya151 = ya_f
+            if rk_norm == "WRKL":
+                ya151 = ya_f + (nb_f / 2)
+            elif rk_norm == "WRKR":
+                ya151 = ya_f - (nb_f / 2)
             la151 = groove_len + tool_diam
             br151 = nb_f
         else:
             xa151 = xa_f
+            if rk_norm == "WRKL":
+                xa151 = xa_f - (nb_f / 2)
+            elif rk_norm == "WRKR":
+                xa151 = xa_f + (nb_f / 2)
             ya151 = br_100 / 2 if br_100 else ya_f
             la151 = nb_f
             br151 = groove_len + tool_diam
