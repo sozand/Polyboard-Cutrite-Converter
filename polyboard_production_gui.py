@@ -1071,6 +1071,8 @@ class CutlistGeneratorTab:
 
         dx = abs(xa_f - xe_f)
         dy = abs(ya_f - ye_f)
+        ddx = xe_f - xa_f
+        ddy = ye_f - ya_f
         along_x = dx != 0
         groove_len = dx if along_x else dy
 
@@ -1085,17 +1087,29 @@ class CutlistGeneratorTab:
             xa151 = la_100 / 2 if la_100 else xa_f
             ya151 = ya_f
             if rk_norm == "WRKL":
-                ya151 = ya_f + (nb_f / 2)
+                if ddx > 0:
+                    ya151 = ya_f + (nb_f / 2)
+                else:
+                    ya151 = ya_f - (nb_f / 2)
             elif rk_norm == "WRKR":
-                ya151 = ya_f - (nb_f / 2)
+                if ddx > 0:
+                    ya151 = ya_f - (nb_f / 2)
+                else:
+                    ya151 = ya_f + (nb_f / 2)
             la151 = groove_len + tool_diam
             br151 = nb_f
         else:
             xa151 = xa_f
             if rk_norm == "WRKL":
-                xa151 = xa_f - (nb_f / 2)
+                if ddy > 0:
+                    xa151 = xa_f - (nb_f / 2)
+                else:
+                    xa151 = xa_f + (nb_f / 2)
             elif rk_norm == "WRKR":
-                xa151 = xa_f + (nb_f / 2)
+                if ddy > 0:
+                    xa151 = xa_f + (nb_f / 2)
+                else:
+                    xa151 = xa_f - (nb_f / 2)
             ya151 = br_100 / 2 if br_100 else ya_f
             la151 = nb_f
             br151 = groove_len + tool_diam
