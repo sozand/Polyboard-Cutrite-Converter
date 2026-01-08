@@ -6,6 +6,7 @@ import re
 from datetime import datetime
 import json
 import uuid
+import sys
 from Detect_Processes_In_mpr_file_ import map_and_count_mpr_processes
 
 try:
@@ -71,6 +72,20 @@ CONVENTION_COLUMNS = [
 ]
 
 
+def get_app_base_dir() -> Path:
+    """Directory where the script/exe lives (portable-friendly)."""
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).resolve().parent
+    return Path(__file__).resolve().parent
+
+
+CONFIG_FILENAME = "polyboard_config.json"
+
+
+def get_config_path() -> Path:
+    return get_app_base_dir() / CONFIG_FILENAME
+
+
 def apply_dark_theme(root: tk.Tk):
     """Apply a simple dark theme to ttk and Tk widgets."""
     style = ttk.Style(root)
@@ -98,13 +113,14 @@ def apply_dark_theme(root: tk.Tk):
 class ConventionEditorDialog:
     """Modal dialog to edit convention data (CRUD) with import/export."""
 
-    def __init__(self, parent, initial_df: pd.DataFrame, json_path: Path, on_save_callback):
+    def __init__(self, parent, initial_df: pd.DataFrame, json_path: Path, on_save_callback, edge_dir: Path = None):
         self.parent = parent
         self.json_path = json_path
         self.on_save_callback = on_save_callback
         self.data_df = initial_df.copy() if initial_df is not None else pd.DataFrame(columns=CONVENTION_COLUMNS)
         self.image_thumbs = []
         self.image_full = {}
+        self.edge_dir = edge_dir if edge_dir is not None else Path(__file__).resolve().parent / "Edge_Diagram_Ref"
 
         self.window = tk.Toplevel(parent)
         self.window.title("Convention Editor")
@@ -195,9 +211,9 @@ class ConventionEditorDialog:
         for child in list(self.img_inner.winfo_children()):
             child.destroy()
 
-        ref_dir = Path(__file__).resolve().parent / "Edge_Diagram_Ref"
+        ref_dir = self.edge_dir
         if not ref_dir.exists():
-            ttk.Label(self.img_inner, text="Edge_Diagram_Ref folder not found.", foreground=DARK_FG, background=DARK_BG).pack(anchor="w", padx=4, pady=2)
+            ttk.Label(self.img_inner, text=f"Edge_Diagram_Ref folder not found: {ref_dir}", foreground=DARK_FG, background=DARK_BG).pack(anchor="w", padx=4, pady=2)
             return
         files = sorted([p for p in ref_dir.iterdir() if p.is_file() and p.suffix.lower() in [".png", ".jpg", ".jpeg", ".gif", ".bmp"]], key=lambda p: p.name)
         if not files:
@@ -459,6 +475,10 @@ class MPRProcessorTab:
             self._log_status(f"Selected folder: {folder}")
     
     def _log_status(self, message):
+        if self.status_text is None:
+            # Fallback when UI not yet built
+            print(message)
+            return
         self.status_text.config(state=tk.NORMAL)
         self.status_text.insert(tk.END, message + "\n")
         self.status_text.see(tk.END)
@@ -619,14 +639,64 @@ class CutlistGeneratorTab:
         self.convention_file = tk.StringVar()
         self.cutlist_file = tk.StringVar()
         self.convention_df = None
-        # Convention JSON is always alongside this script
-        self.convention_json_path = Path(__file__).resolve().parent / "Polyboard_convention.json"
+        # Paths/config
+        self.config_path = get_config_path()
+        self.base_dir = get_app_base_dir()
+        self.config_data = self._load_config()
+        self.convention_json_path = self._get_configured_convention_path()
+        self.edge_dir_path = self._get_configured_edge_dir()
+        self.convention_path_var = tk.StringVar(value=str(self.convention_json_path))
+        self.edge_dir_var = tk.StringVar(value=str(self.edge_dir_path))
         self.cutlist_df = None
         self.status_text = None
         self.tool_diameter = tk.DoubleVar(value=10.0)
         self.remove_macro_124 = tk.BooleanVar(value=False)
         
         self._create_widgets()
+        self._update_path_entries()
+
+    # ---------------- Config helpers ----------------
+    def _load_config(self) -> dict:
+        if not self.config_path.exists():
+            return {}
+        try:
+            return json.loads(self.config_path.read_text(encoding="utf-8"))
+        except Exception as e:
+            self._log_status(f"Failed to load config ({self.config_path}): {e}")
+            return {}
+
+    def _save_config(self):
+        data = {
+            "convention_json": str(self.convention_json_path),
+            "edge_dir": str(self.edge_dir_path),
+        }
+        try:
+            self.config_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
+            self.config_data = data
+            self._log_status(f"Saved defaults to {self.config_path}")
+        except Exception as e:
+            messagebox.showerror("Save Error", f"Could not save defaults:\n{e}")
+
+    def _get_configured_convention_path(self) -> Path:
+        candidate = self.config_data.get("convention_json")
+        if candidate:
+            return Path(candidate)
+        return self.base_dir / "Polyboard_convention.json"
+
+    def _get_configured_edge_dir(self) -> Path:
+        candidate = self.config_data.get("edge_dir")
+        if candidate:
+            return Path(candidate)
+        return self.base_dir / "Edge_Diagram_Ref"
+
+    def _update_path_entries(self):
+        self.convention_path_var.set(str(self.convention_json_path))
+        if self.convention_path_label:
+            self.convention_path_label.config(state="normal")
+            self.convention_path_label.delete(0, tk.END)
+            self.convention_path_label.insert(0, str(self.convention_json_path))
+            self.convention_path_label.config(state="readonly")
+        self.edge_dir_var.set(str(self.edge_dir_path))
     
     def _create_widgets(self):
         # Title
@@ -641,9 +711,23 @@ class CutlistGeneratorTab:
         conv_frame = ttk.Frame(file_frame)
         conv_frame.pack(fill=tk.X, pady=5)
         ttk.Label(conv_frame, text="Convention JSON:").pack(side=tk.LEFT, padx=(0, 5))
-        self.convention_path_label = ttk.Entry(conv_frame, width=60, state="readonly")
+        self.convention_path_label = ttk.Entry(conv_frame, textvariable=self.convention_path_var, width=60, state="readonly")
         self.convention_path_label.pack(side=tk.LEFT, padx=(0, 5), fill=tk.X, expand=True)
+        ttk.Button(conv_frame, text="Browse", command=self._choose_convention_json).pack(side=tk.LEFT, padx=(5, 0))
         ttk.Button(conv_frame, text="Edit Convention", command=self._open_convention_editor).pack(side=tk.LEFT, padx=(5, 0))
+        
+        # Edge diagram folder
+        edge_frame = ttk.Frame(file_frame)
+        edge_frame.pack(fill=tk.X, pady=5)
+        ttk.Label(edge_frame, text="Edge Diagram Folder:").pack(side=tk.LEFT, padx=(0, 5))
+        self.edge_dir_entry = ttk.Entry(edge_frame, textvariable=self.edge_dir_var, width=60, state="readonly")
+        self.edge_dir_entry.pack(side=tk.LEFT, padx=(0, 5), fill=tk.X, expand=True)
+        ttk.Button(edge_frame, text="Browse", command=self._choose_edge_dir).pack(side=tk.LEFT)
+        
+        # Save defaults
+        save_frame = ttk.Frame(file_frame)
+        save_frame.pack(fill=tk.X, pady=2)
+        ttk.Button(save_frame, text="Save defaults (paths above)", command=self._save_defaults).pack(side=tk.LEFT, padx=(0, 5))
         
         # Cutlist file
         cutlist_frame = ttk.Frame(file_frame)
@@ -698,6 +782,16 @@ class CutlistGeneratorTab:
         if file:
             self.convention_file.set(file)
             self._log_status(f"Selected convention file: {file}")
+
+    def _choose_convention_json(self):
+        file = filedialog.askopenfilename(
+            title="Select Convention JSON",
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
+        )
+        if file:
+            self.convention_json_path = Path(file)
+            self._update_path_entries()
+            self._log_status(f"Selected convention JSON: {file}")
     
     def _select_cutlist_file(self):
         file = filedialog.askopenfilename(
@@ -712,6 +806,19 @@ class CutlistGeneratorTab:
                 self.convention_path_label.insert(0, str(self.convention_json_path))
                 self.convention_path_label.config(state="readonly")
             self._log_status(f"Selected cutlist file: {file}")
+
+    def _choose_edge_dir(self):
+        folder = filedialog.askdirectory(
+            title="Select Edge_Diagram_Ref Folder"
+        )
+        if folder:
+            self.edge_dir_path = Path(folder)
+            self._update_path_entries()
+            self._log_status(f"Selected edge diagram folder: {folder}")
+
+    def _save_defaults(self):
+        self._save_config()
+        messagebox.showinfo("Defaults Saved", f"Saved to {self.config_path}")
     
     def _log_status(self, message):
         self.status_text.config(state=tk.NORMAL)
@@ -753,6 +860,7 @@ class CutlistGeneratorTab:
         self.convention_df = df
         # Save empty JSON so editor/loader share path
         try:
+            json_path.parent.mkdir(parents=True, exist_ok=True)
             json_path.write_text(df.to_json(orient="records", force_ascii=False, indent=2), encoding="utf-8")
         except Exception as e:
             self._log_status(f"Failed to write empty convention JSON: {e}")
@@ -974,7 +1082,14 @@ class CutlistGeneratorTab:
         return Path.cwd()
 
     def _get_convention_json_path(self) -> Path:
-        return Path(self.convention_json_path)
+        path = Path(self.convention_json_path)
+        if not path.exists():
+            fallback = self.base_dir / "Polyboard_convention.json"
+            self._log_status(f"Convention path not found, falling back to {fallback}")
+            self.convention_json_path = fallback
+            self._update_path_entries()
+            return fallback
+        return path
 
     def _generate_deterministic_id(self, *texts) -> str:
         """Deterministic UUID (uuid5) from sorted text inputs."""
@@ -1389,6 +1504,7 @@ class CutlistGeneratorTab:
         self._log_status(f"Convention updated in memory ({len(df)} rows).")
         json_path = self._get_convention_json_path()
         try:
+            json_path.parent.mkdir(parents=True, exist_ok=True)
             json_path.write_text(df.to_json(orient="records", force_ascii=False, indent=2), encoding="utf-8")
             self._log_status(f"Convention JSON saved to {json_path}")
         except Exception as e:
@@ -1412,7 +1528,7 @@ class CutlistGeneratorTab:
             messagebox.showerror("Load Error", f"Unable to load convention:\n{e}")
             current_df = pd.DataFrame(columns=CONVENTION_COLUMNS)
         json_path = self._get_convention_json_path()
-        ConventionEditorDialog(self.frame.winfo_toplevel(), current_df, json_path, self._on_convention_saved)
+        ConventionEditorDialog(self.frame.winfo_toplevel(), current_df, json_path, self._on_convention_saved, edge_dir=self.edge_dir_path)
 
     def _populate_preview(self, df: pd.DataFrame, max_rows: int = 50):
         """Populate the preview treeview with first rows of df"""

@@ -38,6 +38,18 @@ Tools to prepare Polyboard project exports for production: clean and convert MPR
    - MPR files are backed up (`.bak`) before modifications.
    - Outputs final cutlist CSV (semicolon-separated).
 
+## Build Windows .exe (PyInstaller one-folder)
+1) Requirements: Python 3.12 x64, `pip install -r requirements.txt`.
+2) Run `build_exe.bat` from the repo root. It creates `dist\PolyboardProduction\PolyboardProduction.exe`.
+3) Bundled assets: convention JSON/XLSX, `mpr_format_reference.json`, `Polyboard_Convention_Column_Summary.md`, `woodwop-mpr4x-format-pdf-free.pdf`, and the `Edge_Diagram_Ref` image folder.
+4) Verify after build: launch the EXE, open “Edit Convention” (JSON loads/edits), load a sample cutlist CSV, and confirm edge diagram thumbnails render. If Pillow is absent, the GUI will list image names instead of thumbnails.
+
+## Configurable paths (portable defaults)
+- A `polyboard_config.json` file lives next to the script/EXE to remember user-selected defaults:
+  - `convention_json`: full path to the convention JSON.
+  - `edge_dir`: full path to the `Edge_Diagram_Ref` folder.
+- In the GUI, use the Browse buttons (Convention JSON, Edge Diagram Folder) and click “Save defaults” to persist. The app falls back to paths beside the script if the config is missing.
+
 ## Configuration
 - Tool diameter (for 109→151) via spinbox in GUI (default 10mm).
 - Convention stored in `Polyboard_convention.json`; import/export via dialog.
