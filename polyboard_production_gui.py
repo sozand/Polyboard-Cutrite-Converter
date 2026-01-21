@@ -1297,6 +1297,12 @@ class CutlistGeneratorTab:
         # Process blocks
         block_re = re.compile(r'(?ms)^\s*<\s*(\d+)\b.*?(?=^\s*<\s*\d+\b|\Z)')
         matches = list(block_re.finditer(text))
+        
+        # Preserve header (everything before the first <digit block)
+        header = ""
+        if matches:
+            header = text[:matches[0].start()]
+        
         out_blocks = []
         for m in matches:
             block = m.group(0)
@@ -1324,7 +1330,7 @@ class CutlistGeneratorTab:
             actions["new_text"] = text
             return actions
 
-        new_text = "\n".join(out_blocks)
+        new_text = header + "\n".join(out_blocks)
         if new_text != text:
             actions["changed"] = True
         actions["new_text"] = new_text
